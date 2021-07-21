@@ -474,7 +474,7 @@ public class XWPFUtils {
 	
 	
 	//自已後來找的
-	 public static void searchAndReplace(XWPFDocument document,Map<String, Object> data1) {
+	 public static void searchAndReplace(XWPFDocument document,Map<String, String> data1) {
 		try {
 
 			/**
@@ -489,7 +489,7 @@ public class XWPFUtils {
 					XWPFTableRow row = table.getRow(i);  //獲得表格的行
 					List<XWPFTableCell> cells = row.getTableCells();  //在行元素中，獲得表格的單元格
 					for (XWPFTableCell cell : cells) {        //遍歷單元格
-						for (Entry<String, Object> e : data1.entrySet()) {
+						for (Entry<String, String> e : data1.entrySet()) {
 							if (cell.getText().equals(e.getKey())) {   //如果單元格中的變數和‘鍵’相等，就用‘鍵’所對應的‘值’代替。
 								cell.removeParagraph(0);      //所以這裡就要求每一個單元格只能有唯一的變數。
 								cell.setText((String) e.getValue());

@@ -54,11 +54,11 @@ public class ExcelToWord {
 	String excelFolderPath; // excel資料夾位置
 	String tempFileFolderPath; // word範本位置
 	String destFileFolderPath; // word輸出資料夾位置
-	String JCLNameLast;// 存放JCLName
+//	String JCLNameLast;// 存放JCLName
 	String systemName;
 	String sheetName;
 	XWPFUtils XWPFUtils = new XWPFUtils();
-
+//	Map<String, Object> data1 = null;
 	// (CellIndex,HeaderName)
 	Map<Integer, String> HeaderName = new HashMap<Integer, String>();
 
@@ -81,9 +81,9 @@ public class ExcelToWord {
 			queryColArray = Arrays.asList(pro.getProperty("queryColArray").split(","));
 			tableOutputKey = Arrays.asList(pro.getProperty("tableOutputKey").split(","));
 			table3OutputKey = Arrays.asList(pro.getProperty("table3OutputKey").split(","));
-			table4OutputKey = Arrays.asList(pro.getProperty("table4OutputKey").split(","));
-			table5OutputKey = Arrays.asList(pro.getProperty("table5OutputKey").split(","));
-			table6OutputKey = Arrays.asList(pro.getProperty("table6OutputKey").split(","));
+//			table4OutputKey = Arrays.asList(pro.getProperty("table4OutputKey").split(","));
+//			table5OutputKey = Arrays.asList(pro.getProperty("table5OutputKey").split(","));
+//			table6OutputKey = Arrays.asList(pro.getProperty("table6OutputKey").split(","));
 			logger.info("需要抓取的欄位 " + queryColArray);
 		} catch (FileNotFoundException e) {
 			logger.info(e.toString());
@@ -180,7 +180,7 @@ public class ExcelToWord {
 //							if (cell.getStringCellValue() == "DSN") {
 //								dnsIndex = cell.getColumnIndex();
 //							} else {
-						
+
 							HeaderName.put(cell.getColumnIndex(), cell.getStringCellValue());
 //							}
 //							System.out.println(HeaderName);
@@ -200,7 +200,7 @@ public class ExcelToWord {
 				 * 解析Row的資料 excelDataList.add(convertRowToData(row, firstRow, dnsIndex)); }-
 				 */
 				// 解析Row的資料
-				
+
 				excelDataList.add(convertRowToData(row, dnsIndex));
 //				System.out.println(excelDataList);
 			}
@@ -214,37 +214,34 @@ public class ExcelToWord {
 	 * @param excelDataList 整理過的Excel檔案
 	 */
 	public void outPutToWork(List<Map<String, String>> excelDataList) {
-		
-		//篩選Delete_Reason_EXEC_DD
-		Iterator<Map<String, String>> ppIterator=excelDataList.iterator();
-		while(ppIterator.hasNext()) {
-			Map<String, String> reMap=ppIterator.next();
-			if(!reMap.get("Delete_Reason_EXEC_DD").equals("")) {
+
+		// 篩選Delete_Reason_EXEC_DD
+		Iterator<Map<String, String>> ppIterator = excelDataList.iterator();
+		while (ppIterator.hasNext()) {
+			Map<String, String> reMap = ppIterator.next();
+			if (!reMap.get("Delete_Reason_EXEC_DD").equals("")) {
 				ppIterator.remove();
 			}
 		}
-		
-		
-		
+
 		// 抓出不重複的JCL
 		HashSet<String> jclKeys = new HashSet<>();
 		excelDataList.forEach(cn -> {
 			jclKeys.add(cn.get("JCL"));
 		});
-	
+
 		int fileCount = 0;
 		logger.info("預計產出 {} 個檔案", jclKeys.size());
 		// 將不重複的相同JCL_NAME的資料Group to List並輸出word
 		for (String classKey : jclKeys) {
 			logger.info("開始輸出:" + classKey);
 			List<Map<String, String>> toWordList;
-			toWordList = excelDataList.stream().filter(excelModel -> excelModel.get("JCL") == classKey
-						)
+			toWordList = excelDataList.stream().filter(excelModel -> excelModel.get("JCL") == classKey)
 					.collect(Collectors.toList()); // 篩選classkey之後回傳
 			// 輸出Word
+//			if(classKey.equals("JBPDEM4W")) {
 //			System.out.println(toWordList);
-//			System.out.println(excelDataList);
-			
+//			}
 //			if(excelDataList.contains("Delete_Reason_EXEC_DD").equals("")) {
 //				
 //			}
@@ -283,9 +280,6 @@ public class ExcelToWord {
 				}
 				// 2.再去抓Header的欄位名稱
 				String firstRowName = HeaderName.get(key);
-			
-				
-				
 
 //				// 1.先抓現在第幾個Column
 //				int cellNum = cell.getColumnIndex();
@@ -315,9 +309,7 @@ public class ExcelToWord {
 //					JCLNameLast = cell.getStringCellValue();
 //				}
 //			}
-				
-				
-				
+
 				// 如果是DISP Status，要抓DSN的值帶過來
 //			if (firstRowName.equals("DISP_Initial")) {
 //				switch (firstRowName) {
@@ -347,7 +339,7 @@ public class ExcelToWord {
 //				System.out.println(cell.getStringCellValue());
 //			}
 //			}
-				//找內容  只要針對欄位 ( Delete_Reason_EXEC_DD)為空白的，再產生word資料即可
+				// 找內容 只要針對欄位 ( Delete_Reason_EXEC_DD)為空白的，再產生word資料即可
 //				if (HeaderName.get(key).equals("Delete_Reason_EXEC_DD")) {
 //					
 //					if(!cell.getStringCellValue().equals("")) {
@@ -355,22 +347,20 @@ public class ExcelToWord {
 //						}
 //						
 //					}
-
-					
+//				if (HeaderName.get(key).equals("IMS_Get")) {
+//					System.out.println(cell.getStringCellValue());
+//					}
+//					
 				excelDateMap.put(firstRowName, cell.getStringCellValue());
-			}	
+			}
 		}
-	
+
 //		System.out.println(excelDateMap);
-//		//找內容  只要針對欄位 ( Delete_Reason_EXEC_DD)為空白的，再產生word資料即可
-//		if (HeaderName.get(key).equals("Delete_Reason_EXEC_DD")) {
-//			
-//			if(!cell.getStringCellValue().equals("")) {
-//				excelDateMap.remove(excelDateMap);
-//				}
-//				
+//		//找內容  
+//		if (HeaderName.get(key).equals("IMS_Get")) {
+//			System.out.println();
 //			}
-		
+
 		return excelDateMap;
 	}
 
@@ -393,13 +383,12 @@ public class ExcelToWord {
 					.collect(Collectors.toList());
 			List<Map<String, String>> inputList = excelList
 					.stream().filter(item -> item.get("Open_Mode").equals("INPUT")
-							|| item.get("Open_Mode").equals("I-O") || item.get("Open_Mode").equals("INPUT,OUTPUT"))
+							|| item.get("Open_Mode").equals("I-O") || item.get("DD").equals("SORTIN"))
 					.collect(Collectors.toList());
 
-			List<Map<String, String>> ouputList = excelList.stream()
-					.filter(item -> item.get("Open_Mode").equals("OUTPUT") || item.get("Open_Mode").equals("I-O")
-							|| item.get("Open_Mode").equals("INPUT,OUTPUT")
-							|| item.get("Open_Mode").equals("I-O,INPUT"))
+			List<Map<String, String>> ouputList = excelList
+					.stream().filter(item -> item.get("Open_Mode").equals("OUTPUT")
+							|| item.get("Open_Mode").equals("I-O") || item.get("DD").equals("SORTOUT"))
 					.collect(Collectors.toList());
 //			List<Map<String, String>> imdbsTable = excelList.stream()
 //					.filter(item -> !item.get("IMS_Get").equals("") || !item.get("IMS_Insert").equals("")
@@ -414,20 +403,20 @@ public class ExcelToWord {
 //					.distinct().collect(Collectors.toList());
 //			List<Map<String, String>> test = excelList.stream().collect(Collectors.toList());
 //			System.out.println(test.toString());
-			
+
 			// !"".equals(item.get("Error_code"))反過來寫才不會錯誤
-			List<Map<String, String>> errorCode = excelList.stream()
-					.filter(item->(!"".equals(item.get("Error_code")) && item.get("Error_code") != null) 
-							|| (!"".equals(item.get("異常處理")) && item.get("異常處理")!=null)
-							|| (!"".equals(item.get("異常處理方式")) && item.get("異常處理方式")!=null)
-							|| (!"".equals(item.get("通知方式")) && item.get("通知方式")!=null)
-							|| (!"".equals(item.get("通知處理方式")) && item.get("通知處理方式")!=null)
-							|| (!"".equals(item.get("Mobile_Number_1st")) && item.get("Mobile_Number_1st")!=null)
-							|| (!"".equals(item.get("Mobile_Number_2nd")) && item.get("Mobile_Number_2nd")!=null))
-					.filter(Objects::nonNull)
-					
-					.collect(Collectors.toList());
-			
+//			List<Map<String, String>> errorCode = excelList.stream()
+//					.filter(item->(!"".equals(item.get("Error_code")) && item.get("Error_code") != null) 
+//							|| (!"".equals(item.get("異常處理")) && item.get("異常處理")!=null)
+//							|| (!"".equals(item.get("異常處理方式")) && item.get("異常處理方式")!=null)
+//							|| (!"".equals(item.get("通知方式")) && item.get("通知方式")!=null)
+//							|| (!"".equals(item.get("通知處理方式")) && item.get("通知處理方式")!=null)
+//							|| (!"".equals(item.get("Mobile_Number_1st")) && item.get("Mobile_Number_1st")!=null)
+//							|| (!"".equals(item.get("Mobile_Number_2nd")) && item.get("Mobile_Number_2nd")!=null))
+//					.filter(Objects::nonNull)
+//					
+//					.collect(Collectors.toList());
+
 			// !item.get("Error_code").equals("") filter不能這樣寫,會nullpointerexception
 //			List<Map<String, String>> errorCode = excelList.stream()
 //					.filter(item->(!item.get("Error_code").equals("") && item.get("Error_code") != null) 
@@ -439,11 +428,7 @@ public class ExcelToWord {
 //							|| (!item.get("Mobile_Number_2nd").equals("") && item.get("Mobile_Number_2nd")!=null))
 //					.filter(Objects::nonNull)
 //					.collect(Collectors.toList());
-			
-			
-			
-			
-		
+
 //			System.out.println(errorCode.toString());
 			for (XWPFParagraph xwpfParagraph : xwpfParas) {
 				String itemText = xwpfParagraph.getText();
@@ -459,16 +444,16 @@ public class ExcelToWord {
 				case "${resultTable}":
 					XWPFUtils.replaceTable(doc, itemText, ouputList, table3OutputKey);
 					break;
-//				case "${imdbsTable}":
+//				case "${IMS_Get}":
 //					XWPFUtils.replaceTable(doc, itemText, imdbsTable, table4OutputKey);
 //					break;
 //				case "${db2Table}":
 //					XWPFUtils.replaceTable(doc, itemText, db2Table, table5OutputKey);
 //					break;
-				case "${Error_code}":
-					XWPFUtils.replaceTable(doc, itemText, errorCode, table6OutputKey);
-					break;	
-					
+//				case "${Error_code}":
+//					XWPFUtils.replaceTable(doc, itemText, errorCode, table6OutputKey);
+//					break;	
+//					
 				}
 			}
 
@@ -496,27 +481,157 @@ public class ExcelToWord {
 //			System.out.println("111111111111111"+excelList.get(0).get("DB2_Include"));
 //			data.put("${DB2_Select}", excelList.get(0).get("DB2_Select"));
 //			System.out.println("222222222222222"+excelList.get(0).get("IMS_Get"));
-			
+
 //			System.out.println("Test Map Data:"+data.toString());
 			// 取代資料
 			XWPFUtils.replaceInPara(doc, data);
 
-			
-            
-            Map<String, Object> data1 = new HashMap<>();
-            data1.put("${IMS_Get}", excelList.get(0).get("IMS_Get"));
-            data1.put("${IMS_Insert}", excelList.get(0).get("IMS_Insert"));
-            data1.put("${IMS_Update}", excelList.get(0).get("IMS_Update"));
-            data1.put("${IMS_Delete}", excelList.get(0).get("IMS_Delete"));
-            data1.put("${DB2_Include}", excelList.get(0).get("DB2_Include"));
-            data1.put("${DB2_Select}", excelList.get(0).get("DB2_Select"));
-            data1.put("${DB2_Insert}", excelList.get(0).get("DB2_Insert"));
-            data1.put("${DB2_Update}", excelList.get(0).get("DB2_Update"));
-            data1.put("${DB2_Delete}", excelList.get(0).get("DB2_Delete"));
-            XWPFUtils.searchAndReplace(doc, data1);
-          
+//			Integer indexnumInteger=0;
+//			System.out.println(excelList.size());
 
-          
+//			if (excelList.get(0).get("JCL").equals("JBPDEM4W")) {
+//				for (int i = 0; i < excelList.size(); i++) {
+//			System.out.println(excelList.get(i));
+//					System.out.println(excelList.get(i).get("IMS_Get"));
+//					System.out.println(excelList.get(i).get("IMS_Insert"));
+//					System.out.println(excelList.get(i).get("IMS_Update"));
+//					System.out.println(excelList.get(i).get("IMS_Delete"));
+//					System.out.println(excelList.get(i).get("DB2_Include"));
+//					System.out.println(excelList.get(i).get("DB2_Select"));
+//					System.out.println(excelList.get(i).get("DB2_Insert"));
+//					System.out.println(excelList.get(i).get("DB2_Update"));
+//					System.out.println(excelList.get(i).get("DB2_Delete"));
+//				}
+//			}
+
+			HashSet<String> imsgetHashSet = new HashSet<String>();
+			HashSet<String> imsinsertHashSet = new HashSet<String>();
+			HashSet<String> imsupdateHashSet = new HashSet<String>();
+			HashSet<String> imsdeleteHashSet = new HashSet<String>();
+			HashSet<String> db2includeHashSet = new HashSet<String>();
+			HashSet<String> db2selectHashSet = new HashSet<String>();
+			HashSet<String> db2insertHashSet = new HashSet<String>();
+			HashSet<String> db2updateHashSet = new HashSet<String>();
+			HashSet<String> db2deleteHashSet = new HashSet<String>();
+			Map<String, String> data1 = new HashMap<>();
+			
+			//拆開丟進set 去掉重復的值
+			for (int i = 0; i < excelList.size(); i++) {
+				String[] imsget_listString = excelList.get(i).get("IMS_Get").toString().split(",");
+				for (String thisStr : imsget_listString) {
+					imsgetHashSet.add(thisStr);
+				}
+				String[] imsinsert_listString = excelList.get(i).get("IMS_Insert").toString().split(",");
+				for (String thisStr : imsinsert_listString) {
+					imsinsertHashSet.add(thisStr);
+				}
+				String[] imsupdate_listString = excelList.get(i).get("IMS_Update").toString().split(",");
+				for (String thisStr : imsupdate_listString) {
+					imsupdateHashSet.add(thisStr);
+				}
+				String[] imsdelete_listString = excelList.get(i).get("IMS_Delete").toString().split(",");
+				for (String thisStr : imsdelete_listString) {
+					imsdeleteHashSet.add(thisStr);
+				}
+				String[] db2include_listString = excelList.get(i).get("DB2_Include").toString().split(",");
+				for (String thisStr : db2include_listString) {
+					db2includeHashSet.add(thisStr);
+				}
+
+				String[] db2select_listString = excelList.get(i).get("DB2_Select").toString().split(",");
+				for (String thisStr : db2select_listString) {
+					db2selectHashSet.add(thisStr);
+				}
+				String[] db2insert_listString = excelList.get(i).get("DB2_Insert").toString().split(",");
+				for (String thisStr : db2insert_listString) {
+					db2insertHashSet.add(thisStr);
+				}
+				String[] db2update_listString = excelList.get(i).get("DB2_Update").toString().split(",");
+				for (String thisStr : db2update_listString) {
+					db2updateHashSet.add(thisStr);
+				}
+				String[] db2delete_listString = excelList.get(i).get("DB2_Delete").toString().split(",");
+				for (String thisStr : db2delete_listString) {
+					db2deleteHashSet.add(thisStr);
+				}
+
+			}
+			
+			//拆開set存入字串
+			String ig = "";
+			Iterator imsget = imsgetHashSet.iterator();
+			while (imsget.hasNext()) {
+				ig = ig + imsget.next()+ "  ";
+			}
+			data1.put("${IMS_Get}", ig);
+
+			String ii = "";
+			Iterator imsinsert = imsinsertHashSet.iterator();
+			while (imsinsert.hasNext()) {
+				ii = ii + imsinsert.next()+ "  ";
+			}
+			data1.put("${IMS_Insert}", ii);
+
+			String iu = "";
+			Iterator imsupdate = imsupdateHashSet.iterator();
+			while (imsupdate.hasNext()) {
+				iu = iu + imsupdate.next()+ "  ";
+			}
+			data1.put("${IMS_Update}", iu);
+
+			String id = "";
+			Iterator imsdelete = imsdeleteHashSet.iterator();
+			while (imsdelete.hasNext()) {
+				id = id + imsdelete.next()+ "  ";
+			}
+			data1.put("${IMS_Delete}", id);
+
+			String di = "";
+			Iterator db2include = db2includeHashSet.iterator();
+			while (db2include.hasNext()) {
+				di = di + db2include.next() + "  ";
+			}
+			data1.put("${DB2_Include}", di);
+
+			String ds = "";
+			Iterator db2select = db2selectHashSet.iterator();
+			while (db2select.hasNext()) {
+				ds = ds + db2select.next()+ "  ";
+			}
+			data1.put("${DB2_Select}", ds);
+
+			String din = "";
+			Iterator db2insert = db2insertHashSet.iterator();
+			while (db2insert.hasNext()) {
+				din = din + db2insert.next()+ "  ";
+			}
+			data1.put("${DB2_Insert}", String.valueOf(din));
+
+			String du = "";
+			Iterator db2update = db2updateHashSet.iterator();
+			while (db2update.hasNext()) {
+				du = du + db2update.next()+ "  ";
+			}
+			data1.put("${DB2_Update}", du);
+
+			String dd = "";
+			Iterator db2delete = db2deleteHashSet.iterator();
+			while (db2delete.hasNext()) {
+				dd = dd + db2delete.next()+ "  ";
+			}
+			data1.put("${DB2_Delete}", dd);
+
+//			data1.put("${IMS_Get}", imsgetHashSet.toString());
+//			data1.put("${IMS_Insert}", imsinsertHashSet.toString());
+//			data1.put("${IMS_Update}", imsupdateHashSet.toString());
+//			data1.put("${IMS_Delete}", imsdeleteHashSet.toString());
+//			data1.put("${DB2_Include}", db2includeHashSet.toString());
+//			data1.put("${DB2_Select}", db2selectHashSet.toString());
+//			data1.put("${DB2_Insert}", db2insertHashSet.toString());
+//			data1.put("${DB2_Update}", db2updateHashSet.toString());
+//			data1.put("${DB2_Delete}", db2deleteHashSet.toString());
+
+			XWPFUtils.searchAndReplace(doc, data1);
 			doc.write(os);
 		} catch (FileNotFoundException e) {
 			logger.info(e.toString());
