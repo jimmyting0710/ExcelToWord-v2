@@ -377,7 +377,7 @@ public class ExcelToWord {
 						+ excelList.get(0).get("AD") + "_" + excelList.get(0).get("JCL") + ".docx");) {
 			XWPFDocument doc = XWPFUtils.openDoc(is);
 			List<XWPFParagraph> xwpfParas = doc.getParagraphs();
-
+//篩選完自建表格
 			List<Map<String, String>> Catalog = excelList.stream()
 					.filter(item -> item.get("DISP").equals("SHR") || item.get("DISP").equals("OLD"))
 					.collect(Collectors.toList());
@@ -476,17 +476,11 @@ public class ExcelToWord {
 				data.put("${JCL_Description}", "<<" + excelList.get(0).get("JCL Description") + ">>");
 
 			}
-//			data.put("${IMS_Get}", excelList.get(0).get("IMS_Get"));
-//			data.put("${DB2_Include}", excelList.get(0).get("DB2_Include"));
-//			System.out.println("111111111111111"+excelList.get(0).get("DB2_Include"));
-//			data.put("${DB2_Select}", excelList.get(0).get("DB2_Select"));
-//			System.out.println("222222222222222"+excelList.get(0).get("IMS_Get"));
 
 //			System.out.println("Test Map Data:"+data.toString());
 			// 取代資料
 			XWPFUtils.replaceInPara(doc, data);
 
-//			Integer indexnumInteger=0;
 //			System.out.println(excelList.size());
 
 //			if (excelList.get(0).get("JCL").equals("JBPDEM4W")) {
@@ -605,7 +599,7 @@ public class ExcelToWord {
 			while (db2insert.hasNext()) {
 				din = din + db2insert.next()+ "  ";
 			}
-			data1.put("${DB2_Insert}", String.valueOf(din));
+			data1.put("${DB2_Insert}", din);
 
 			String du = "";
 			Iterator db2update = db2updateHashSet.iterator();
