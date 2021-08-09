@@ -555,65 +555,67 @@ public class ExcelToWord {
 			String ig = "";
 			Iterator imsget = imsgetHashSet.iterator();
 			while (imsget.hasNext()) {
-				ig = ig + imsget.next()+ "  ";
+		
+				ig = ig + imsget.next()+ "、";
 			}
-			data1.put("${IMS_Get}", ig);
+		
+			data1.put("${IMS_Get}", ig.substring(0,ig.length()-1).replaceFirst("、", ""));
 
 			String ii = "";
 			Iterator imsinsert = imsinsertHashSet.iterator();
 			while (imsinsert.hasNext()) {
-				ii = ii + imsinsert.next()+ "  ";
+				ii = ii + imsinsert.next()+ "、";
 			}
-			data1.put("${IMS_Insert}", ii);
+			data1.put("${IMS_Insert}", ii.substring(0,ii.length()-1).replaceFirst("、", ""));
 
 			String iu = "";
 			Iterator imsupdate = imsupdateHashSet.iterator();
 			while (imsupdate.hasNext()) {
-				iu = iu + imsupdate.next()+ "  ";
+				iu = iu + imsupdate.next()+ "、";
 			}
-			data1.put("${IMS_Update}", iu);
+			data1.put("${IMS_Update}", iu.substring(0,iu.length()-1).replaceFirst("、", ""));
 
 			String id = "";
 			Iterator imsdelete = imsdeleteHashSet.iterator();
 			while (imsdelete.hasNext()) {
-				id = id + imsdelete.next()+ "  ";
+				id = id + imsdelete.next()+ "、";
 			}
-			data1.put("${IMS_Delete}", id);
+			data1.put("${IMS_Delete}", id.substring(0,id.length()-1).replaceFirst("、", ""));
 
 			String di = "";
 			Iterator db2include = db2includeHashSet.iterator();
 			while (db2include.hasNext()) {
-				di = di + db2include.next() + "  ";
+				di = di + db2include.next() +"、";
 			}
-			data1.put("${DB2_Include}", di);
+			data1.put("${DB2_Include}", di.substring(0,di.length()-1).replaceFirst("、", ""));
 
 			String ds = "";
 			Iterator db2select = db2selectHashSet.iterator();
 			while (db2select.hasNext()) {
-				ds = ds + db2select.next()+ "  ";
+				ds = ds + db2select.next()+ "、";
 			}
-			data1.put("${DB2_Select}", ds);
+			data1.put("${DB2_Select}", ds.substring(0,ds.length()-1).replaceFirst("、", ""));
 
 			String din = "";
 			Iterator db2insert = db2insertHashSet.iterator();
 			while (db2insert.hasNext()) {
-				din = din + db2insert.next()+ "  ";
+				din = din + db2insert.next()+ "、";
 			}
-			data1.put("${DB2_Insert}", din);
+			data1.put("${DB2_Insert}", din.substring(0,din.length()-1).replaceFirst("、", ""));
 
 			String du = "";
 			Iterator db2update = db2updateHashSet.iterator();
 			while (db2update.hasNext()) {
-				du = du + db2update.next()+ "  ";
+				du = du + db2update.next()+ "、";
 			}
-			data1.put("${DB2_Update}", du);
+			data1.put("${DB2_Update}", du.substring(0,du.length()-1).replaceFirst("、", ""));
 
 			String dd = "";
 			Iterator db2delete = db2deleteHashSet.iterator();
 			while (db2delete.hasNext()) {
-				dd = dd + db2delete.next()+ "  ";
+				dd = dd + db2delete.next()+ "、";
 			}
-			data1.put("${DB2_Delete}", dd);
+			data1.put("${DB2_Delete}", dd.substring(0,dd.length()-1).replaceFirst("、", ""));
 
 //			data1.put("${IMS_Get}", imsgetHashSet.toString());
 //			data1.put("${IMS_Insert}", imsinsertHashSet.toString());
